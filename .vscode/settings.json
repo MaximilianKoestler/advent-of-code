@@ -1,0 +1,4 @@
+{
+  "rust-analyzer.linkedProjects": ["2015/day_01_1/Cargo.toml"],
+  "editor.formatOnSave": true
+}
