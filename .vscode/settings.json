@@ -1,8 +1,4 @@
 {
-  "rust-analyzer.linkedProjects": [
-    "2015/day_01_1/Cargo.toml",
-    "2015/day_01_2/Cargo.toml"
-  ],
   "editor.formatOnSave": true,
   "workbench.editor.customLabels.patterns": {
     "**/src/main.rs": "${dirname(2)}/${dirname(1)}.rs"
