@@ -2,7 +2,7 @@
 //! Restrictions for today:
 //!   - As many iterator adaptors as possible
 //!   - No manual loops
-//!   - No non-std dependencies
+//!   - No external non-std dependencies
 
 use std::io::Read;
 
@@ -21,10 +21,12 @@ fn main() {
     let file = std::fs::File::open("input/input.txt").unwrap();
     let reader = std::io::BufReader::new(file);
 
-    let floor = get_floor(reader.bytes().map(|b| b.unwrap()).map(|b| {
-        assert!(b.is_ascii());
-        b as char
-    }));
+    let floor = get_floor(
+        reader
+            .bytes()
+            .map(|b| b.and_then(common::ascii_byte_to_char))
+            .map(Result::unwrap),
+    );
 
     println!("Floor: {}", floor);
 }
