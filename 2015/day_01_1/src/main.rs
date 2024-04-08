@@ -8,11 +8,13 @@ use std::io::Read;
 
 /// Gets the final floor after following all instructions.
 fn get_floor(chars: impl Iterator<Item = char>) -> i32 {
-    chars.fold(0, |floor, c| match c {
-        '(' => floor + 1,
-        ')' => floor - 1,
-        _ => floor,
-    })
+    chars
+        .map(|c| match c {
+            '(' => 1,
+            ')' => -1,
+            _ => 0,
+        })
+        .sum()
 }
 
 fn main() {
