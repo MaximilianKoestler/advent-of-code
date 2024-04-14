@@ -6,7 +6,7 @@
 
 use std::io::BufRead;
 
-const DIMENSIONS: usize = 3;
+use day_02_1::{extract_side_lengths, DIMENSIONS};
 
 /// Calculates the wrapping area of a box with the given side lengths.
 fn wrapping_area(side_lengths: [u64; DIMENSIONS]) -> u64 {
@@ -26,14 +26,7 @@ fn wrapping_area(side_lengths: [u64; DIMENSIONS]) -> u64 {
 
 /// Calculates the wrapping area of a box with the given dimensions as a string.
 fn wrapping_area_from_string(side_lengths: &str) -> Option<u64> {
-    let side_lengths: [u64; DIMENSIONS] = side_lengths
-        .split('x')
-        .map(str::parse::<u64>)
-        .map(Result::ok)
-        .collect::<Option<Vec<u64>>>()?
-        .try_into()
-        .ok()?;
-    Some(wrapping_area(side_lengths))
+    Some(wrapping_area(extract_side_lengths(side_lengths)?))
 }
 
 fn main() {
@@ -51,7 +44,7 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
-    use super::{wrapping_area, wrapping_area_from_string};
+    use super::*;
 
     #[test]
     fn test_wrapping_area() {
