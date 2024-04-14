@@ -47,7 +47,7 @@ fn get_basement_position(chars: impl Iterator<Item = char>) -> Option<usize> {
 }
 
 fn main() {
-    let file = std::fs::File::open("input/input.txt").unwrap();
+    let file = std::fs::File::open("../day_01_1/input/input.txt").unwrap();
     let reader = std::io::BufReader::new(file);
 
     let floor = get_basement_position(
