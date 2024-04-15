@@ -26,7 +26,7 @@ fn wrapping_area(side_lengths: [u64; DIMENSIONS]) -> u64 {
 
 /// Calculates the wrapping area of a box with the given dimensions as a string.
 fn wrapping_area_from_string(side_lengths: &str) -> Option<u64> {
-    Some(wrapping_area(extract_side_lengths(side_lengths)?))
+    extract_side_lengths(side_lengths).map(wrapping_area)
 }
 
 fn main() {

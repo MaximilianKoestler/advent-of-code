@@ -20,7 +20,7 @@ fn ribbon_length(side_lengths: [u64; DIMENSIONS]) -> u64 {
 
 /// Calculates the wrapping area of a box with the given dimensions as a string.
 fn ribbon_length_from_string(side_lengths: &str) -> Option<u64> {
-    Some(ribbon_length(extract_side_lengths(side_lengths)?))
+    extract_side_lengths(side_lengths).map(ribbon_length)
 }
 
 fn main() {
