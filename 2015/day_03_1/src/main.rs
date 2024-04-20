@@ -22,7 +22,7 @@ impl SetBasedWorldMap {
     fn new() -> Self {
         let current_position = Position { x: 0, y: 0 };
         Self {
-            current_position: current_position.clone(),
+            current_position: current_position,
             visited: vec![current_position].into_iter().collect(),
         }
     }
@@ -30,13 +30,8 @@ impl SetBasedWorldMap {
 
 impl WorldMap for SetBasedWorldMap {
     fn take_step(&mut self, direction: Direction) {
-        match direction {
-            Direction::North => self.current_position.y += 1,
-            Direction::East => self.current_position.x += 1,
-            Direction::South => self.current_position.y -= 1,
-            Direction::West => self.current_position.x -= 1,
-        }
-        self.visited.insert(self.current_position.clone());
+        self.current_position += direction;
+        self.visited.insert(self.current_position);
     }
 
     fn visited_positions(&self) -> usize {

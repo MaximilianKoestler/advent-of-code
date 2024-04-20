@@ -28,13 +28,8 @@ impl SetBasedWorldMap {
 
 impl WorldMap for SetBasedWorldMap {
     fn take_step(&mut self, current_position: &mut Position, direction: Direction) {
-        match direction {
-            Direction::North => current_position.y += 1,
-            Direction::East => current_position.x += 1,
-            Direction::South => current_position.y -= 1,
-            Direction::West => current_position.x -= 1,
-        }
-        self.visited.insert(current_position.clone());
+        *current_position += direction;
+        self.visited.insert(*current_position);
     }
 
     fn visited_positions(&self) -> usize {
@@ -43,11 +38,12 @@ impl WorldMap for SetBasedWorldMap {
 }
 
 fn positions_on_path(map: &mut impl WorldMap, path: impl Iterator<Item = Direction>) -> usize {
+    const SANTA_COUNT: usize = 2;
     path.scan(
-        (0, [Position { x: 0, y: 0 }, Position { x: 0, y: 0 }]),
-        |(mover_index, positions), direction| {
-            map.take_step(&mut positions[*mover_index], direction);
-            *mover_index = (*mover_index + 1) % 2;
+        (0, [Position { x: 0, y: 0 }; SANTA_COUNT]),
+        |(santa_id, positions), direction| {
+            map.take_step(&mut positions[*santa_id], direction);
+            *santa_id = (*santa_id + 1) % SANTA_COUNT;
             Some(())
         },
     )
