@@ -22,7 +22,7 @@ impl SetBasedWorldMap {
     fn new() -> Self {
         let current_position = Position { x: 0, y: 0 };
         Self {
-            current_position: current_position,
+            current_position,
             visited: vec![current_position].into_iter().collect(),
         }
     }

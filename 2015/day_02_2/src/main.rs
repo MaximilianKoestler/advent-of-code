@@ -11,7 +11,7 @@ use day_02_1::{extract_side_lengths, DIMENSIONS};
 /// Calculates the wrapping area of a box with the given side lengths.
 fn ribbon_length(side_lengths: [u64; DIMENSIONS]) -> u64 {
     // after sorting, the smallest side is defined by the first two elements
-    let mut side_lengths = side_lengths.clone();
+    let mut side_lengths = side_lengths;
     side_lengths.sort();
 
     // smallest side perimeter + volume

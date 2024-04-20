@@ -11,7 +11,7 @@ use day_02_1::{extract_side_lengths, DIMENSIONS};
 /// Calculates the wrapping area of a box with the given side lengths.
 fn wrapping_area(side_lengths: [u64; DIMENSIONS]) -> u64 {
     // after sorting, the smallest side is defined by the first two elements
-    let mut side_lengths = side_lengths.clone();
+    let mut side_lengths = side_lengths;
     side_lengths.sort();
 
     let mut side_areas = side_lengths
@@ -21,7 +21,7 @@ fn wrapping_area(side_lengths: [u64; DIMENSIONS]) -> u64 {
         .peekable();
 
     // we need the slack once and the other sides twice each
-    side_areas.peek().unwrap().clone() + 2 * side_areas.sum::<u64>()
+    *side_areas.peek().unwrap() + 2 * side_areas.sum::<u64>()
 }
 
 /// Calculates the wrapping area of a box with the given dimensions as a string.
