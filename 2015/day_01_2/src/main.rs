@@ -21,29 +21,10 @@ fn get_basement_position(chars: impl Iterator<Item = char>) -> Option<usize> {
                 }
                 _ => (),
             }
-            Some((*floor, position + 1)) // 1-indexed
+            Some((*floor, position))
         })
-        .scan(false, |basement, (floor, position)| {
-            // this is like take_while, but with a look-ahead of one, so we include the last element
-            if *basement {
-                None
-            } else {
-                if floor < 0 {
-                    *basement = true;
-                }
-                Some((floor, position))
-            }
-        })
-        .last()
-        .and_then(
-            |(floor, position)| {
-                if floor < 0 {
-                    Some(position)
-                } else {
-                    None
-                }
-            },
-        )
+        .find(|(floor, _)| *floor < 0)
+        .map(|(_, position)| position + 1) // 1-indexed
 }
 
 fn main() {
