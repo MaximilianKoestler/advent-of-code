@@ -11,16 +11,31 @@ fn valid_coin(hash: &[u8; 16]) -> bool {
     u128::from_be_bytes(*hash).leading_zeros() >= LEADING_ZERO_NIBBLES * 4
 }
 
-// https://github.com/rayon-rs/rayon/issues/359
-// https://github.com/rayon-rs/rayon/issues/520
-fn smallest_suffix(secret_key: &str) -> Option<u32> {
+fn smallest_suffix(secret_key: &str) -> Option<u64> {
+    const CHUNK_SIZE: u64 = 1024;
     (u32::MIN..u32::MAX)
         .into_par_iter()
-        .with_min_len(100_000_000)
-        .map(|i| (i, format!("{}{}", secret_key, i)))
-        .map(|(i, s)| (i, md5::compute(s)))
-        .find_first(|(_, s)| valid_coin(s.deref()))
+        .map(|chunk_id| {
+            (0u64..CHUNK_SIZE)
+                .map(|i| CHUNK_SIZE * (chunk_id as u64) + i)
+                .map(|i| (i, format!("{}{}", secret_key, i)))
+                .map(|(i, s)| (i, md5::compute(s)))
+                .find(|(_, s)| valid_coin(s.deref()))
+        })
+        .find_first(|r| r.is_some())
+        .flatten()
         .map(|(i, _)| i)
+
+    // Actually I would like this to work:
+    // https://github.com/rayon-rs/rayon/issues/359
+    // https://github.com/rayon-rs/rayon/issues/520
+    // (u32::MIN..u32::MAX)
+    //     .into_par_iter()
+    //     .with_min_len(100_000)
+    //     .map(|i| (i, format!("{}{}", secret_key, i)))
+    //     .map(|(i, s)| (i, md5::compute(s)))
+    //     .find_first(|(_, s)| valid_coin(s.deref()))
+    //     .map(|(i, _)| i as u64)
 }
 
 fn main() {
