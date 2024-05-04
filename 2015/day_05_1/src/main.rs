@@ -7,32 +7,7 @@
 use std::io::BufRead;
 use std::iter;
 
-/// Represents the result of a nicety check.
-enum CheckResult {
-    /// The nicety check is still undecided.
-    Undecided,
-    /// The string is definitely nice.
-    Nice,
-    /// The string is definitely naughty.
-    Naughty,
-}
-
-/// Represents a token in the input string.
-enum Token {
-    /// A character token.
-    Char(char),
-    /// The end of the string token.
-    End,
-}
-
-/// Checks if a string is nice according to the following rules:
-/// - It contains at least three vowels (aeiou only)
-/// - It contains at least one letter that appears twice in a row
-/// - It does not contain the strings ab, cd, pq, or xy
-trait NicetyChecker {
-    /// Consumes a token and returns the result of the nicety check.
-    fn consume(&mut self, t: Token) -> CheckResult;
-}
+use day_05_1::{CheckResult, NicetyChecker, Token};
 
 /// A simple automaton for performing nicety checks on strings.
 /// Can calculate the nicety in a single pass.
@@ -53,8 +28,12 @@ impl SimpleAutomaton {
 }
 
 impl NicetyChecker for SimpleAutomaton {
-    fn consume(&mut self, t: Token) -> CheckResult {
-        match t {
+    /// Checks if a string is nice according to the following rules:
+    /// - It contains at least three vowels (aeiou only)
+    /// - It contains at least one letter that appears twice in a row
+    /// - It does not contain the strings ab, cd, pq, or xy
+    fn consume(&mut self, _position: usize, token: Token) -> CheckResult {
+        match token {
             Token::Char(c) => {
                 if matches!(c, 'a' | 'e' | 'i' | 'o' | 'u') {
                     self.vowels += 1;
@@ -63,12 +42,14 @@ impl NicetyChecker for SimpleAutomaton {
                     self.double_letter = true;
                 }
 
+                let last_letter = self.last_letter;
+                self.last_letter = Some(c);
+
                 if matches!(c, 'b' | 'd' | 'q' | 'y')
-                    && self.last_letter == Some(((c as u8) - 1) as char)
+                    && last_letter == Some(((c as u8) - 1) as char)
                 {
                     CheckResult::Naughty
                 } else {
-                    self.last_letter = Some(c);
                     CheckResult::Undecided
                 }
             }
@@ -87,14 +68,12 @@ fn is_nice(chars: impl Iterator<Item = char>) -> bool {
     chars
         .map(Token::Char)
         .chain(iter::once(Token::End))
-        .scan(SimpleAutomaton::new(), |automaton, t| {
-            Some(automaton.consume(t))
+        .enumerate()
+        .scan(SimpleAutomaton::new(), |automaton, (i, t)| {
+            Some(automaton.consume(i, t))
         })
-        .all(|r| match r {
-            CheckResult::Undecided => true,
-            CheckResult::Nice => true,
-            CheckResult::Naughty => false,
-        })
+        .find(|r| !matches!(r, CheckResult::Undecided))
+        .map_or_else(|| false, |r| matches!(r, CheckResult::Nice))
 }
 
 fn main() {
