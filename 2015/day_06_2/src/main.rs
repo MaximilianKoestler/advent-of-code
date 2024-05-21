@@ -53,7 +53,7 @@ fn main() {
             .map(|line| Instruction::try_from(line.as_ref()).unwrap()),
     );
 
-    println!("Total brightness: {}", lit_lights);
+    println!("Total brightness: {lit_lights}");
 }
 
 #[cfg(test)]

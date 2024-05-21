@@ -4,7 +4,6 @@
 //!   - No manual loops
 
 use rayon::prelude::*;
-use std::ops::Deref;
 
 const LEADING_ZERO_NIBBLES: u32 = 6;
 fn valid_coin(hash: &[u8; 16]) -> bool {
@@ -17,12 +16,12 @@ fn smallest_suffix(secret_key: &str) -> Option<u64> {
         .into_par_iter()
         .map(|chunk_id| {
             (0u64..CHUNK_SIZE)
-                .map(|i| CHUNK_SIZE * (chunk_id as u64) + i)
-                .map(|i| (i, format!("{}{}", secret_key, i)))
+                .map(|i| CHUNK_SIZE * u64::from(chunk_id) + i)
+                .map(|i| (i, format!("{secret_key}{i}")))
                 .map(|(i, s)| (i, md5::compute(s)))
-                .find(|(_, s)| valid_coin(s.deref()))
+                .find(|(_, s)| valid_coin(s))
         })
-        .find_first(|r| r.is_some())
+        .find_first(std::option::Option::is_some)
         .flatten()
         .map(|(i, _)| i)
 
@@ -32,15 +31,15 @@ fn smallest_suffix(secret_key: &str) -> Option<u64> {
     // (u32::MIN..u32::MAX)
     //     .into_par_iter()
     //     .with_min_len(100_000)
-    //     .map(|i| (i, format!("{}{}", secret_key, i)))
+    //     .map(|i| (i, format!("{secret_key}{}")))i
     //     .map(|(i, s)| (i, md5::compute(s)))
-    //     .find_first(|(_, s)| valid_coin(s.deref()))
+    //     .find_first(|(_, s)| valid_coin(&**s))
     //     .map(|(i, _)| i as u64)
 }
 
 fn main() {
     let suffix = smallest_suffix("yzbqklnj").unwrap();
-    println!("Answer: {}", suffix);
+    println!("Answer: {suffix}");
 }
 
 #[cfg(test)]

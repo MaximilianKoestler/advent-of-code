@@ -95,7 +95,7 @@ fn main() {
         .filter(|s| is_nice(s.chars()))
         .count();
 
-    println!("Nice Strings: {}", nice_strings);
+    println!("Nice Strings: {nice_strings}");
 }
 
 #[cfg(test)]

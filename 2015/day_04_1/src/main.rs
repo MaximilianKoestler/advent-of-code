@@ -3,24 +3,23 @@
 //!   - As many iterator adaptors as possible
 //!   - No manual loops
 
-use std::ops::Deref;
-
 const LEADING_ZERO_NIBBLES: u32 = 5;
 fn valid_coin(hash: &[u8; 16]) -> bool {
     u128::from_be_bytes(*hash).leading_zeros() >= LEADING_ZERO_NIBBLES * 4
 }
 
 fn smallest_suffix(secret_key: &str) -> Option<u64> {
+    #[allow(clippy::maybe_infinite_iter)]
     (0u64..)
-        .map(|i| (i, format!("{}{}", secret_key, i)))
+        .map(|i| (i, format!("{secret_key}{i}")))
         .map(|(i, s)| (i, md5::compute(s)))
-        .find(|(_, s)| valid_coin(s.deref()))
+        .find(|(_, s)| valid_coin(s))
         .map(|(i, _)| i)
 }
 
 fn main() {
     let suffix = smallest_suffix("yzbqklnj").unwrap();
-    println!("Answer: {}", suffix);
+    println!("Answer: {suffix}");
 }
 
 #[cfg(test)]

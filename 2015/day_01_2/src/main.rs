@@ -39,7 +39,7 @@ fn main() {
     )
     .unwrap();
 
-    println!("Basement position: {}", floor);
+    println!("Basement position: {floor}");
 }
 
 #[cfg(test)]

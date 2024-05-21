@@ -28,7 +28,7 @@ fn main() {
             .map(Result::unwrap),
     );
 
-    println!("Floor: {}", floor);
+    println!("Floor: {floor}");
 }
 
 #[cfg(test)]

@@ -12,7 +12,7 @@ use day_02_1::{extract_side_lengths, DIMENSIONS};
 fn ribbon_length(side_lengths: [u64; DIMENSIONS]) -> u64 {
     // after sorting, the smallest side is defined by the first two elements
     let mut side_lengths = side_lengths;
-    side_lengths.sort();
+    side_lengths.sort_unstable();
 
     // smallest side perimeter + volume
     2 * (side_lengths[0] + side_lengths[1]) + side_lengths.iter().product::<u64>()
@@ -33,7 +33,7 @@ fn main() {
         .map(|s| ribbon_length_from_string(&s))
         .map(Option::unwrap)
         .sum();
-    println!("Ribbon length: {}", area);
+    println!("Ribbon length: {area}");
 }
 
 #[cfg(test)]

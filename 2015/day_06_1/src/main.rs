@@ -31,7 +31,7 @@ impl LightGrid {
     fn count_lit_lights(&self) -> usize {
         self.lights
             .iter()
-            .map(|row| row.iter().map(|&light| light as usize).sum::<usize>())
+            .map(|row| row.iter().map(|&light| usize::from(light)).sum::<usize>())
             .sum()
     }
 }
@@ -53,7 +53,7 @@ fn main() {
             .map(|line| Instruction::try_from(line.as_ref()).unwrap()),
     );
 
-    println!("Lit lights: {}", lit_lights);
+    println!("Lit lights: {lit_lights}");
 }
 
 #[cfg(test)]

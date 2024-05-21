@@ -62,7 +62,7 @@ fn main() {
             .map(Result::unwrap),
     );
 
-    println!("Positions: {}", positions);
+    println!("Positions: {positions}");
 }
 
 #[cfg(test)]

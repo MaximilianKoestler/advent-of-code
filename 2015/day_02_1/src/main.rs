@@ -12,7 +12,7 @@ use day_02_1::{extract_side_lengths, DIMENSIONS};
 fn wrapping_area(side_lengths: [u64; DIMENSIONS]) -> u64 {
     // after sorting, the smallest side is defined by the first two elements
     let mut side_lengths = side_lengths;
-    side_lengths.sort();
+    side_lengths.sort_unstable();
 
     let mut side_areas = side_lengths
         .iter()
@@ -39,7 +39,7 @@ fn main() {
         .map(|s| wrapping_area_from_string(&s))
         .map(Option::unwrap)
         .sum();
-    println!("Wrapping paper area: {}", area);
+    println!("Wrapping paper area: {area}");
 }
 
 #[cfg(test)]
