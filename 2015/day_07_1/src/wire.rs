@@ -33,20 +33,20 @@ mod parsers {
     use nom::{
         branch::alt,
         bytes::complete::tag,
-        character::complete::{alpha1, digit1},
-        combinator::{map, map_res, recognize},
+        character::complete::alpha1,
+        combinator::{map, map_res},
         sequence::{pair, separated_pair},
         IResult,
     };
 
-    use super::*;
+    use super::{Gate, Signal, Wire, WireName, WireSource};
 
     fn parse_name(input: &str) -> IResult<&str, WireName> {
-        map_res(recognize(alpha1), str::parse)(input).map(|(input, name)| (input, WireName(name)))
+        map(map_res(alpha1, str::parse), WireName)(input)
     }
 
     fn parse_value(input: &str) -> IResult<&str, u16> {
-        map_res(recognize(digit1), str::parse)(input)
+        nom::character::complete::u16(input)
     }
 
     pub fn parse_signal(input: &str) -> IResult<&str, Signal> {
