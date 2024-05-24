@@ -1,13 +1,13 @@
-use crate::wire::{Gate, Signal, Wire, WireName, WireSource};
+use crate::wire::{Gate, Name, Signal, Source, Wire};
 use std::collections::HashMap;
 
 pub struct SignalMap {
-    wires: HashMap<WireName, u16>,
+    wires: HashMap<Name, u16>,
 }
 
 impl SignalMap {
     pub fn get_signal(&self, name: &str) -> u16 {
-        self.wires[&WireName(name.to_string())]
+        self.wires[&Name(name.to_string())]
     }
 }
 
@@ -36,9 +36,9 @@ fn try_evaluate_gate(gate: &Gate, signals: &SignalMap) -> Option<u16> {
 
 fn try_evaluate_instruction(instruction: &Wire, signals: &SignalMap) -> Option<u16> {
     match &instruction.source {
-        WireSource::Value(value) => Some(*value),
-        WireSource::Direct(name) => signals.wires.get(name).copied(),
-        WireSource::Gate(gate) => try_evaluate_gate(gate, signals),
+        Source::Value(value) => Some(*value),
+        Source::Direct(name) => signals.wires.get(name).copied(),
+        Source::Gate(gate) => try_evaluate_gate(gate, signals),
     }
 }
 
