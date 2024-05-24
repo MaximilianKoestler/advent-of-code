@@ -2,7 +2,7 @@
 
 use std::io::BufRead;
 
-use day_07_1::simulator::evaluate_network;
+use day_07_1::emulator::evaluate_network;
 use day_07_1::wire::Wire;
 
 fn main() {

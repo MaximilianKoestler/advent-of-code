@@ -2,7 +2,7 @@
 
 use std::io::BufRead;
 
-use day_07_1::simulator::evaluate_network;
+use day_07_1::emulator::evaluate_network;
 use day_07_1::wire::Wire;
 
 fn main() {
@@ -17,7 +17,7 @@ fn main() {
     );
 
     let wire_a_part_1 = signals.unwrap().get_signal("a").unwrap();
-    let overwrite = format!("{} -> b", wire_a_part_1);
+    let overwrite = format!("{wire_a_part_1} -> b");
 
     let file = std::fs::File::open("../day_07_1/input/input.txt").unwrap();
     let reader = std::io::BufReader::new(file);

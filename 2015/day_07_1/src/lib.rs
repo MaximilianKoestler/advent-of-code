@@ -1,2 +1,2 @@
-pub mod simulator;
+pub mod emulator;
 pub mod wire;
