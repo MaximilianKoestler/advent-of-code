@@ -2,6 +2,7 @@ use crate::wire::{Gate, Name, Signal, Source, Wire};
 use std::collections::HashMap;
 
 /// Represents a mapping of signal names to their corresponding values.
+#[derive(Debug)]
 pub struct SignalMap {
     wires: HashMap<Name, u16>,
 }
