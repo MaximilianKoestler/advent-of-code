@@ -34,7 +34,7 @@ mod parsers {
         branch::alt,
         bytes::complete::tag,
         character::complete::alpha1,
-        combinator::{map, map_res},
+        combinator::map,
         sequence::{preceded, separated_pair},
         IResult,
     };
@@ -42,7 +42,7 @@ mod parsers {
     use super::{Gate, Name, Signal, Source, Wire};
 
     fn name(input: &str) -> IResult<&str, Name> {
-        map(map_res(alpha1, str::parse), Name)(input)
+        map(alpha1, |name: &str| Name(name.to_string()))(input)
     }
 
     fn value(input: &str) -> IResult<&str, u16> {
