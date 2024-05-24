@@ -16,5 +16,8 @@ fn main() {
             .map(|line| Wire::try_from(line.as_ref()).unwrap()),
     );
 
-    println!("Signal on wire a: {}", signals.unwrap().get_signal("a"));
+    println!(
+        "Signal on wire a: {}",
+        signals.unwrap().get_signal("a").unwrap()
+    );
 }

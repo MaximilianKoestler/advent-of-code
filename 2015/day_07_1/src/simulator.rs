@@ -1,13 +1,24 @@
 use crate::wire::{Gate, Name, Signal, Source, Wire};
 use std::collections::HashMap;
 
+/// Represents a mapping of signal names to their corresponding values.
 pub struct SignalMap {
     wires: HashMap<Name, u16>,
 }
 
 impl SignalMap {
-    pub fn get_signal(&self, name: &str) -> u16 {
-        self.wires[&Name(name.to_string())]
+    /// Retrieves the value of a signal by its name.
+    ///
+    /// # Arguments
+    ///
+    /// * `name` - The name of the signal.
+    ///
+    /// # Returns
+    ///
+    /// The value of the signal.
+    #[must_use]
+    pub fn get_signal(&self, name: &str) -> Option<u16> {
+        self.wires.get(&Name(name.to_string())).copied()
     }
 }
 
@@ -42,6 +53,19 @@ fn try_evaluate_instruction(instruction: &Wire, signals: &SignalMap) -> Option<u
     }
 }
 
+/// Evaluates a network of wires and returns the resulting signal map.
+///
+/// # Arguments
+///
+/// * `instructions` - An iterator of `Wire` instructions representing the network.
+///
+/// # Returns
+///
+/// A `Result` containing the resulting `SignalMap` if evaluation is successful, or an error message if evaluation fails.
+///
+/// # Errors
+///
+/// Returns an error message if no progression is possible (dependency loop)
 pub fn evaluate_network(
     instructions: impl Iterator<Item = Wire>,
 ) -> Result<SignalMap, &'static str> {
@@ -85,13 +109,13 @@ mod tests {
         )
         .unwrap();
 
-        assert_eq!(signals.get_signal("d"), 72);
-        assert_eq!(signals.get_signal("e"), 507);
-        assert_eq!(signals.get_signal("f"), 492);
-        assert_eq!(signals.get_signal("g"), 114);
-        assert_eq!(signals.get_signal("h"), 65412);
-        assert_eq!(signals.get_signal("i"), 65079);
-        assert_eq!(signals.get_signal("x"), 123);
-        assert_eq!(signals.get_signal("y"), 456);
+        assert_eq!(signals.get_signal("d"), Some(72));
+        assert_eq!(signals.get_signal("e"), Some(507));
+        assert_eq!(signals.get_signal("f"), Some(492));
+        assert_eq!(signals.get_signal("g"), Some(114));
+        assert_eq!(signals.get_signal("h"), Some(65412));
+        assert_eq!(signals.get_signal("i"), Some(65079));
+        assert_eq!(signals.get_signal("x"), Some(123));
+        assert_eq!(signals.get_signal("y"), Some(456));
     }
 }
