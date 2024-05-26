@@ -3,5 +3,5 @@
   "workbench.editor.customLabels.patterns": {
     "**/src/main.rs": "${dirname(2)}/${dirname(1)}.rs"
   },
-  "cSpell.words": ["lshift", "rshift"]
+  "cSpell.words": ["hexdigit", "lshift", "rshift"]
 }

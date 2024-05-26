@@ -24,12 +24,12 @@ impl CharacterCounter {
         }
     }
 
-    fn count(&self) -> Option<(usize, usize)> {
-        Some((self.code, self.data))
+    fn count(&self) -> (usize, usize) {
+        (self.code, self.data)
     }
 }
 
-fn count_characters(input: &str) -> Option<(usize, usize)> {
+fn count_characters(input: &str) -> (usize, usize) {
     let mut counter = CharacterCounter::new();
     input.chars().for_each(|c| counter.process(c));
     counter.count()
@@ -42,7 +42,7 @@ fn main() {
     let (code, data) = reader
         .lines()
         .map(Result::unwrap)
-        .map(|s| count_characters(&s).unwrap())
+        .map(|s| count_characters(&s))
         .fold((0, 0), |(code_acc, data_acc), (code, data)| {
             (code_acc + code, data_acc + data)
         });
@@ -56,21 +56,21 @@ mod tests {
 
     #[test]
     fn test_empty_string() {
-        assert_eq!(count_characters(r#""""#), Some((6, 2)));
+        assert_eq!(count_characters(r#""""#), (6, 2));
     }
 
     #[test]
     fn test_abc_string() {
-        assert_eq!(count_characters(r#""abc""#), Some((9, 5)));
+        assert_eq!(count_characters(r#""abc""#), (9, 5));
     }
 
     #[test]
     fn test_aaaaaa_string() {
-        assert_eq!(count_characters(r#""aaa\"aaa""#), Some((16, 10)));
+        assert_eq!(count_characters(r#""aaa\"aaa""#), (16, 10));
     }
 
     #[test]
     fn test_hex_string() {
-        assert_eq!(count_characters(r#""\x27""#), Some((11, 6)));
+        assert_eq!(count_characters(r#""\x27""#), (11, 6));
     }
 }

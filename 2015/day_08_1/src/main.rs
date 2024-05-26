@@ -22,10 +22,6 @@ struct CharacterCounter {
     state: State,
 }
 
-fn is_hex(c: char) -> bool {
-    matches!(c, '0'..='9' | 'a'..='f' | 'A'..='F')
-}
-
 impl CharacterCounter {
     fn new() -> Self {
         Self {
@@ -39,32 +35,19 @@ impl CharacterCounter {
         self.code += 1;
         self.state = match (&self.state, input) {
             (State::Start, '"') => State::Valid,
-            (State::Start, _) => State::Error,
             (State::Valid, '"') => State::End,
             (State::Valid, '\\') => State::EscapeSymbol,
-            (State::Valid, _) => {
-                self.data += 1;
-                State::Valid
-            }
-            (State::EscapeSymbol, '\\') => {
-                self.data += 1;
-                State::Valid
-            }
-            (State::EscapeSymbol, '"') => {
+            (State::Valid, _) | (State::EscapeSymbol, '\\' | '"') => {
                 self.data += 1;
                 State::Valid
             }
             (State::EscapeSymbol, 'x') => State::EscapeHexX,
-            (State::EscapeSymbol, _) => State::Error,
-            (State::EscapeHexX, c) if is_hex(c) => State::EscapeHex1,
-            (State::EscapeHexX, _) => State::Error,
-            (State::EscapeHex1, c) if is_hex(c) => {
+            (State::EscapeHexX, c) if c.is_ascii_hexdigit() => State::EscapeHex1,
+            (State::EscapeHex1, c) if c.is_ascii_hexdigit() => {
                 self.data += 1;
                 State::Valid
             }
-            (State::EscapeHex1, _) => State::Error,
-            (State::End, _) => State::Error,
-            (State::Error, _) => State::Error,
+            (_, _) => State::Error,
         }
     }
 
