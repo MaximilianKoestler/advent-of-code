@@ -1,3 +1,5 @@
+pub mod password_generator;
+
 /// Represents the result of a password check.
 #[derive(Debug)]
 pub enum CheckResult {
