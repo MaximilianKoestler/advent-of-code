@@ -1,0 +1,8 @@
+[package]
+name = "day_14_2"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+day_14_1.path = "../day_14_1"
+itertools = "0.13.0"
