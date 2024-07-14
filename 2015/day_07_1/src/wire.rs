@@ -1,13 +1,13 @@
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct Name(pub String);
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Signal {
     Immediate(u16),
     Connection(Name),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Gate {
     Not(Signal),
     And(Signal, Signal),
@@ -16,14 +16,14 @@ pub enum Gate {
     RShift(Signal, u16),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Source {
     Value(u16),
     Gate(Gate),
     Direct(Name),
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Wire {
     pub source: Source,
     pub name: Name,

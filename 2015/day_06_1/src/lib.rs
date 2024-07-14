@@ -9,7 +9,7 @@ use nom::{
 };
 
 /// Represents the possible actions that can be performed.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Action {
     TurnOn,
     TurnOff,
@@ -38,7 +38,7 @@ impl<'a> TryFrom<&'a str> for Action {
 }
 
 /// Represents a coordinate with x and y values.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Coordinate {
     pub x: usize,
     pub y: usize,
@@ -62,7 +62,7 @@ impl<'a> TryFrom<&'a str> for Coordinate {
 }
 
 /// Represents an instruction with an action, start coordinate, and end coordinate.
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Instruction {
     pub action: Action,
     pub start: Coordinate,

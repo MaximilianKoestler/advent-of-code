@@ -1,7 +1,7 @@
 use itertools::Itertools;
 use std::collections::{HashMap, HashSet};
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct LocationPair {
     from: String,
     to: String,

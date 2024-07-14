@@ -1,7 +1,7 @@
 use std::ops::AddAssign;
 
 /// A direction on a 2D grid
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Eq, PartialEq)]
 pub enum Direction {
     North,
     East,
@@ -20,10 +20,10 @@ impl TryFrom<char> for Direction {
     type Error = ();
     fn try_from(c: char) -> Result<Self, Self::Error> {
         match c {
-            '^' => Ok(Direction::North),
-            '>' => Ok(Direction::East),
-            'v' => Ok(Direction::South),
-            '<' => Ok(Direction::West),
+            '^' => Ok(Self::North),
+            '>' => Ok(Self::East),
+            'v' => Ok(Self::South),
+            '<' => Ok(Self::West),
             _ => Err(()),
         }
     }

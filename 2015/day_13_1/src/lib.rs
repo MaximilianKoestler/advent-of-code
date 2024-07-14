@@ -6,17 +6,17 @@ pub struct Name(pub String);
 
 impl From<&str> for Name {
     fn from(s: &str) -> Self {
-        Name(s.to_string())
+        Self(s.to_string())
     }
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Action {
     Gain,
     Lose,
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Information {
     person: Name,
     action: Action,
@@ -232,8 +232,7 @@ mod tests {
 
     #[test]
     fn test_full_algorithm() {
-        let input = vec![
-            "Alice would gain 54 happiness units by sitting next to Bob.",
+        let input = ["Alice would gain 54 happiness units by sitting next to Bob.",
             "Alice would lose 79 happiness units by sitting next to Carol.",
             "Alice would lose 2 happiness units by sitting next to David.",
             "Bob would gain 83 happiness units by sitting next to Alice.",
@@ -244,8 +243,7 @@ mod tests {
             "Carol would gain 55 happiness units by sitting next to David.",
             "David would gain 46 happiness units by sitting next to Alice.",
             "David would lose 7 happiness units by sitting next to Bob.",
-            "David would gain 41 happiness units by sitting next to Carol",
-        ];
+            "David would gain 41 happiness units by sitting next to Carol"];
         let entries = input
             .iter()
             .map(|&line| Information::try_from(line).unwrap())

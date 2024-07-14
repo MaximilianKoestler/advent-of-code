@@ -1,4 +1,4 @@
-#[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct IngredientEffect {
     pub capacity: i32,
     pub durability: i32,
@@ -11,7 +11,7 @@ impl std::ops::Add for IngredientEffect {
     type Output = Self;
 
     fn add(self, other: Self) -> Self {
-        IngredientEffect {
+        Self {
             capacity: self.capacity + other.capacity,
             durability: self.durability + other.durability,
             flavor: self.flavor + other.flavor,
@@ -25,7 +25,7 @@ impl std::ops::Mul<i32> for IngredientEffect {
     type Output = Self;
 
     fn mul(self, other: i32) -> Self {
-        IngredientEffect {
+        Self {
             capacity: self.capacity * other,
             durability: self.durability * other,
             flavor: self.flavor * other,
@@ -35,7 +35,7 @@ impl std::ops::Mul<i32> for IngredientEffect {
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct Ingredient {
     pub name: String,
     pub effect: IngredientEffect,
