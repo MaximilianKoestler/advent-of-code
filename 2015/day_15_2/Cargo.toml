@@ -1,0 +1,7 @@
+[package]
+name = "day_15_2"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+day_15_1.path = "../day_15_1"
