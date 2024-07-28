@@ -36,7 +36,7 @@ impl MfcsamRecord {
 
 fn main() {
     let sample = MfcsamRecord {
-        name: "".to_string(),
+        name: String::new(),
         properties: [
             ("children".to_string(), 3),
             ("cats".to_string(), 7),
