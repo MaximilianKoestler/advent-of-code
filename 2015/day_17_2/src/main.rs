@@ -1,5 +1,5 @@
 //! Advent of code 2015 day 17 part 2
-//!
+
 use std::collections::HashMap;
 use std::io::BufRead;
 
