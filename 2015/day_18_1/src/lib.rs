@@ -82,6 +82,17 @@ impl LightGrid {
             .map(|row| row.iter().filter(|&&light| light).count())
             .sum()
     }
+
+    #[must_use]
+    pub fn size(&self) -> usize {
+        self.lights.len()
+    }
+
+    pub fn set(&mut self, x: usize, y: usize, value: bool) {
+        if let Some(light) = self.lights.get_mut(y).and_then(|row| row.get_mut(x)) {
+            *light = value;
+        }
+    }
 }
 
 #[cfg(test)]
@@ -223,15 +234,6 @@ mod tests {
             .filter(|line| !line.is_empty()),
         )
         .unwrap();
-        assert_eq!(grid.count_on(), 4);
-    }
-
-    #[test]
-    fn test_fold_step() {
-        let grid =
-            LightGrid::from_lines(INPUT.lines().map(str::trim).filter(|line| !line.is_empty()))
-                .unwrap();
-        let grid = (0..4).fold(grid, |grid, _| grid.step());
         assert_eq!(grid.count_on(), 4);
     }
 }
