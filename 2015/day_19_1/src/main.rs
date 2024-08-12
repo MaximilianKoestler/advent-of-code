@@ -3,25 +3,7 @@
 use std::collections::{HashMap, HashSet};
 use std::io::BufRead;
 
-use day_19_1::{parse_replacement, Replacement};
-
-fn tokenize_molecule(molecule: &str) -> Vec<String> {
-    let mut tokens = Vec::new();
-    let mut token = String::new();
-    for c in molecule.chars() {
-        if c.is_uppercase() {
-            if !token.is_empty() {
-                tokens.push(token.clone());
-            }
-            token.clear();
-        }
-        token.push(c);
-    }
-    if !token.is_empty() {
-        tokens.push(token.clone());
-    }
-    tokens
-}
+use day_19_1::{parse_replacement, tokenize_molecule, Replacement};
 
 fn create_unique_modifications(
     molecule: &[String],
@@ -71,12 +53,6 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn test_tokenize_molecule() {
-        assert_eq!(tokenize_molecule("HOH"), ["H", "O", "H"]);
-        assert_eq!(tokenize_molecule("AbCdEf"), ["Ab", "Cd", "Ef"]);
-    }
 
     #[test]
     fn test_create_unique_modifications() {
