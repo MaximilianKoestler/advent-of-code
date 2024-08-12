@@ -3,18 +3,7 @@
 use std::collections::{HashMap, HashSet};
 use std::io::BufRead;
 
-struct Replacement {
-    original: String,
-    replacement: String,
-}
-
-fn parse_replacement(line: &str) -> Replacement {
-    let parts: Vec<&str> = line.split(" => ").collect();
-    Replacement {
-        original: parts[0].to_string(),
-        replacement: parts[1].to_string(),
-    }
-}
+use day_19_1::{parse_replacement, Replacement};
 
 fn tokenize_molecule(molecule: &str) -> Vec<String> {
     let mut tokens = Vec::new();
@@ -82,13 +71,6 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn test_parse_replacement() {
-        let replacement = parse_replacement("H => HO");
-        assert_eq!(replacement.original, "H");
-        assert_eq!(replacement.replacement, "HO");
-    }
 
     #[test]
     fn test_tokenize_molecule() {
