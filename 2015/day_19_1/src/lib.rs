@@ -3,6 +3,7 @@ pub struct Replacement {
     pub replacement: String,
 }
 
+#[must_use]
 pub fn parse_replacement(line: &str) -> Replacement {
     let parts: Vec<&str> = line.split(" => ").collect();
     Replacement {
@@ -11,6 +12,7 @@ pub fn parse_replacement(line: &str) -> Replacement {
     }
 }
 
+#[must_use]
 pub fn tokenize_molecule(molecule: &str) -> Vec<String> {
     let mut tokens = Vec::new();
     let mut token = String::new();

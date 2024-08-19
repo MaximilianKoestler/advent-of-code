@@ -26,7 +26,7 @@ fn bfs(molecule: &[String], replacements: &[Replacement]) -> usize {
                     let replacements_for_token = replacement_map.get(&token).unwrap();
                     for replacement in replacements_for_token {
                         let mut new_molecule = candidate.clone();
-                        new_molecule.splice(i..i + 1, replacement.iter().cloned());
+                        new_molecule.splice(i..=i, replacement.iter().cloned());
                         if new_molecule == molecule {
                             return current_depth + 1;
                         }
