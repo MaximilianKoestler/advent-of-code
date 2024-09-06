@@ -1,4 +1,4 @@
-//! Advent of code 2015 day 22 part 1
+//! Advent of code 2015 day 22 part 2
 
 use std::collections::HashMap;
 
@@ -14,7 +14,7 @@ fn rules() -> Rules {
 
     Rules {
         spell_costs,
-        start_of_turn_damage: 0,
+        start_of_turn_damage: 1,
     }
 }
 

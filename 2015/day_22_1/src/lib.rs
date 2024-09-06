@@ -46,6 +46,7 @@ enum Outcome {
 
 pub struct Rules {
     pub spell_costs: HashMap<Spell, i32>,
+    pub start_of_turn_damage: i32,
 }
 
 const SPELLS: [Spell; 5] = [
@@ -65,6 +66,11 @@ fn spell_combinations(depth: usize) -> impl Iterator<Item = Vec<&'static Spell>>
 fn simulate_single(rules: &Rules, player: &Player, boss: &Boss, spell: &Spell) -> Outcome {
     let mut player = player.clone();
     let mut boss = boss.clone();
+
+    player.stats.hit_points -= rules.start_of_turn_damage;
+    if player.stats.hit_points <= 0 {
+        return Outcome::BossWins;
+    }
 
     // effects at start of player turn
     if player.recharge_timer > 0 {
@@ -265,7 +271,10 @@ mod tests {
         spell_costs.insert(Spell::Poison, 173);
         spell_costs.insert(Spell::Recharge, 229);
 
-        Rules { spell_costs }
+        Rules {
+            spell_costs,
+            start_of_turn_damage: 0,
+        }
     }
 
     #[test]
