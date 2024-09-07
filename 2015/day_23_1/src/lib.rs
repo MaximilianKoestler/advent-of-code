@@ -148,8 +148,12 @@ impl<'a> Processor<'a> {
     }
 
     #[must_use]
-    pub fn register_value(&self, register: Register) -> RegisterValue {
+    pub fn get_register(&self, register: Register) -> RegisterValue {
         self.registers.get(&register).map_or(0, |v| *v)
+    }
+
+    pub fn set_register(&mut self, register: Register, value: RegisterValue) {
+        self.registers.insert(register, value);
     }
 
     #[allow(dead_code)]
@@ -216,17 +220,17 @@ mod tests {
             .collect();
 
         let mut processor = Processor::new(&instructions);
-        assert_eq!(processor.register_value(Register::A), 0);
-        assert_eq!(processor.register_value(Register::B), 0);
+        assert_eq!(processor.get_register(Register::A), 0);
+        assert_eq!(processor.get_register(Register::B), 0);
 
         assert!(!processor.step());
-        assert_eq!(processor.register_value(Register::A), 1);
+        assert_eq!(processor.get_register(Register::A), 1);
 
         assert!(!processor.step());
-        assert_eq!(processor.register_value(Register::A), 1);
+        assert_eq!(processor.get_register(Register::A), 1);
 
         assert!(!processor.step());
-        assert_eq!(processor.register_value(Register::A), 2);
+        assert_eq!(processor.get_register(Register::A), 2);
 
         assert!(processor.step());
     }
@@ -244,7 +248,7 @@ mod tests {
 
         let mut processor = Processor::new(&instructions);
         processor.run();
-        assert_eq!(processor.register_value(Register::A), 2);
+        assert_eq!(processor.get_register(Register::A), 2);
     }
 
     #[test]
@@ -262,7 +266,7 @@ mod tests {
         assert_eq!(processor.program_counter(), Some(1));
 
         assert!(!processor.step());
-        assert_eq!(processor.register_value(Register::A), 1);
+        assert_eq!(processor.get_register(Register::A), 1);
         assert_eq!(processor.program_counter(), None);
     }
 
@@ -282,7 +286,7 @@ mod tests {
         assert_eq!(processor.program_counter(), Some(2));
 
         assert!(!processor.step());
-        assert_eq!(processor.register_value(Register::A), 1);
+        assert_eq!(processor.get_register(Register::A), 1);
         assert_eq!(processor.program_counter(), None);
     }
 
@@ -318,13 +322,13 @@ mod tests {
         let mut processor = Processor::new(&instructions);
 
         assert!(!processor.step());
-        assert_eq!(processor.register_value(Register::A), 1);
+        assert_eq!(processor.get_register(Register::A), 1);
 
         assert!(!processor.step());
         assert_eq!(processor.program_counter(), Some(0));
 
         assert!(!processor.step());
-        assert_eq!(processor.register_value(Register::A), 2);
+        assert_eq!(processor.get_register(Register::A), 2);
 
         assert!(!processor.step());
         assert_eq!(processor.program_counter(), Some(0));
@@ -351,7 +355,7 @@ mod tests {
 
         let mut processor = Processor::new(&instructions);
         processor.run();
-        assert_eq!(processor.register_value(Register::A), 4);
-        assert_eq!(processor.register_value(Register::B), 2);
+        assert_eq!(processor.get_register(Register::A), 4);
+        assert_eq!(processor.get_register(Register::B), 2);
     }
 }
