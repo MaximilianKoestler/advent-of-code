@@ -2,6 +2,24 @@
 
 use std::io::BufRead;
 
+fn next_base_2_lexicographical(previous: u32, n: u32) -> Option<u32> {
+    if previous == 0 {
+        Some(1)
+    } else {
+        None
+    }
+}
+
+fn base_2_lexicographical(n: u32) -> impl Iterator<Item = u32> {
+    // OEIS A359941
+    let mut current = 0;
+    Box::new(std::iter::from_fn(move || {
+        let result = current;
+        current = next_base_2_lexicographical(current, n)?;
+        Some(result)
+    }))
+}
+
 fn select_for_sum(values: &[u32], target: u32) -> impl Iterator<Item = u32> + '_ {
     // values must be sorted in descending order so that this provides masks in ascending size
 
@@ -52,6 +70,29 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_mask_sequence() {
+        // see https://oeis.org/A359941 for the expected sequence
+
+        let masks: Vec<_> = base_2_lexicographical(0).collect();
+        assert_eq!(masks, vec![0]);
+
+        // let masks: Vec<_> = base_2_lexicographical(1).collect();
+        // assert_eq!(masks, vec![0, 1]);
+
+        // let masks: Vec<_> = base_2_lexicographical(2).collect();
+        // assert_eq!(masks, vec![0, 1, 2, 3]);
+
+        // let masks: Vec<_> = base_2_lexicographical(3).collect();
+        // assert_eq!(masks, vec![0, 1, 2, 4, 3, 5, 6, 7]);
+
+        // let masks: Vec<_> = base_2_lexicographical(4).collect();
+        // assert_eq!(
+        //     masks,
+        //     vec![0, 1, 2, 4, 8, 3, 5, 9, 6, 10, 12, 7, 11, 13, 14, 15]
+        // );
+    }
 
     #[test]
     fn test_select_for_sum() {
